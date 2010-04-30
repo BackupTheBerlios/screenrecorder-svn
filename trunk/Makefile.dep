@@ -1,0 +1,26 @@
+
+appclass.o: appclass.c appclass.h broker.h init.h main.h mui.h \
+ include/macros/vapor.h pointer.h qport.h recorder.h screenlistclass.h \
+ utils.h locale.h
+audio.o: audio.c recorder.h
+broker.o: broker.c broker.h mui.h include/macros/vapor.h
+init.o: init.c appclass.h init.h mui.h include/macros/vapor.h \
+ screenlistclass.h
+locale.o: locale.c
+main.o: main.c init.h main.h mui.h include/macros/vapor.h
+methodstack.o: methodstack.c main.h
+mui.o: mui.c appclass.h broker.h init.h main.h mui.h \
+ include/macros/vapor.h recorder.h screenlistclass.h utils.h locale.h
+pointer.o: pointer.c defpointer.h main.h mui.h include/macros/vapor.h \
+ pointer.h recorder.h
+qport.o: qport.c
+recorder.o: recorder.c audio.h main.h pointer.h qport.h recorder.h \
+ scaling.h utils.h locale.h video_avi.h video_mng.h video_png.h
+scaling.o: scaling.c recorder.h
+screenlistclass.o: screenlistclass.c init.h main.h mui.h \
+ include/macros/vapor.h screenlistclass.h utils.h locale.h
+utils.o: utils.c locale.c locale.h
+video_avi.o: video_avi.c main.h recorder.h
+video_jpeg.o: video_jpeg.c recorder.h
+video_mng.o: video_mng.c recorder.h video_png.h
+video_png.o: video_png.c main.h recorder.h video_png.h

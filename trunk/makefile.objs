@@ -1,0 +1,8 @@
+# $Id: png.c,v 1.4 2008/07/10 15:41:57 itix Exp $
+
+OBJS = main.o appclass.o screenlistclass.o utils.o \
+	audio.o \
+	scaling.o recorder.o \
+	video_avi.o video_png.o video_mng.o \
+	qport.o mui.o pointer.o broker.o \
+	init.o

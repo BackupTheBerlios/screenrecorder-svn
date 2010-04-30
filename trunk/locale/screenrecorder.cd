@@ -1,0 +1,207 @@
+; screenrecorder.cd
+; **GADGETS/REQ**
+MSG_OK_REQ_GAD (//)
+*_OK
+;
+; **GADGETS/PREFS**
+MSG_OK_GAD (//)
+_OK
+;
+MSG_START_RECORDING_KEYDEF_GAD (//)
+_Start recording:
+;
+MSG_STOP_RECORDING_KEYDEF_GAD (//)
+Stop _recording:
+;
+MSG_MATCH_PATTERN_GAD (//)
+_Match window title:
+;
+; **GADGETS**
+MSG_IGNORE_RECORDER_WINDOWS_GAD (//)
+_Ignore recorder windows
+;
+MSG_RECORD_ONLY_WHEN_SCREEN_VISIBLE_GAD (//)
+Record only when screen is _visible
+;
+MSG_RECORD_MOUSE_GAD (//)
+Record around _mouse
+;
+MSG_ACTIVE_RECORDING_GAD (//)
+Record always from an _active screen
+;
+MSG_RECORDING_FORMAT_GAD (//)
+Recording _format:
+;
+MSG_FRAMERATE_GAD (//)
+Fram_erate:
+;
+MSG_SCALING_GAD (//)
+_Scaling:
+;
+MSG_PRIORITY_GAD (//)
+_Priority:
+;
+MSG_QUALITY_GAD (//)
+_Quality:
+;
+MSG_MOUSE_CAPTURE_ZONE_GAD (//)
+Mouse capture _zone:
+;
+MSG_RECORDING_DIR_GAD (//)
+Record _dir
+;
+MSG_START_RECORDING_GAD (//)
+_Record
+;
+MSG_STOP_RECORDING_GAD (//)
+_Stop
+;
+MSG_MOUSE_CAPTURE_ZONE_FORMAT (//)
+%ld pix
+;
+; **INFORMATIONAL**
+MSG_SCREEN_NAME (//)
+Name
+;
+MSG_SCREEN_FRAMERATE (//)
+FPS
+;
+MSG_SCREEN_DISPLAY_ENGINE (//)
+Display Engine
+;
+MSG_SCREEN_STATUS (//)
+Status
+;
+MSG_RECORDING (//)
+recording
+;
+MSG_STANDARD_DISPLAY_ENGINE (//)
+Standard
+;
+MSG_ENHANCED_DISPLAY_ENGINE (//)
+Enhanced
+;
+MSG_DEFAULT_SCREEN_TITLE (//)
+[no name]
+;
+MSG_DEFAULT_FRAMERATE (//)
+50.00 Hz
+;
+MSG_SCREEN_FRAMERATE_FORMAT (//)
+%3d.%02d Hz
+;
+MSG_DESCRIPTION (//)
+Record videos
+;
+MSG_TITLE (//)
+Screen Recorder
+;
+MSG_SETTINGS_GLOBAL_KEYDEFS (//)
+Global key shortcuts
+;
+; **CYCLE GADGET CHOICES**
+MSG_FPS_NORMAL (//)
+Normal
+;
+MSG_FPS_HALF (//)
+Halve
+;
+MSG_FPS_QUARTER (//)
+Quarter
+;
+MSG_FPS_10 (//)
+10 FPS
+;
+MSG_FPS_5 (//)
+5 FPS
+;
+MSG_FPS_1 (//)
+1 FPS
+;
+MSG_SCALING_NONE (//)
+No scaling
+;
+MSG_SCALING_HALF (//)
+Half size
+;
+MSG_SCALING_QUARTER (//)
+Quarter size
+;
+MSG_SCALING_1024X768 (//)
+1024x768
+;
+MSG_SCALING_800X600 (//)
+800x600
+;
+MSG_SCALING_640X480 (//)
+640x480
+;
+MSG_SCALING_320X240 (//)
+320x240
+;
+MSG_SCALING_160X120 (//)
+160x120
+;
+MSG_VIDEO_FORMAT_MJPEG (//)
+MJPEG
+;
+MSG_VIDEO_FORMAT_MNG (//)
+MNG
+;
+MSG_PRIORITY_NORMAL (//)
+Normal
+;
+MSG_PRIORITY_HIGH (//)
+High
+;
+MSG_PRIORITY_LOW (//)
+Low
+;
+MSG_VIDEO_QUALITY_BEST (//)
+Best
+;
+MSG_VIDEO_QUALITY_EXCELLENT (//)
+Excellent
+;
+MSG_VIDEO_QUALITY_GOOD (//)
+Good
+;
+MSG_VIDEO_QUALITY_POOR (//)
+Poor
+;
+MSG_VIDEO_QUALITY_BAD (//)
+Bad
+;
+; **MENUS**
+MSG_MENU_PROJECT_TITLE (//)
+Project
+;
+MSG_MENU_PROJECT_ABOUT (//)
+?\0About
+;
+MSG_MENU_PROJECT_QUIT (//)
+Q\0Quit
+;
+MSG_MENU_SETTINGS_TITLE (//)
+Settings
+;
+MSG_MENU_SETTINGS_APP (//)
+S\0Application...
+;
+MSG_MENU_SETTINGS_MUI (//)
+MUI...
+;
+; **REQUESTERS**
+MSG_DIR_NOT_ACCESSIBLE (//)
+Can not start recording because directory\n%s\nis not accessible.
+;
+MSG_ABOUT (//)
+\033c%s\n\nWritten by %s\n%s\n\nIcon by %s
+;
+MSG_MINIMUM_REQUIREMENTS (//)
+This program requires an AMIGA with 68020 and FPU or better.
+;
+; **WINDOWS**
+MSG_WINDOW_TITLE_SETTINGS (//)
+Settings
+;
