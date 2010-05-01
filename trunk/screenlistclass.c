@@ -227,7 +227,7 @@ DEFTMETHOD(ScreenList_Update)
 					{
 						tempcount--;
 						n->recording = node->recording;
-						REMOVE(node);
+						REMOVE((struct Node *)node);
 						FreeMem(node, node->nodelen);
 					}
 				}
@@ -257,13 +257,19 @@ DEFTMETHOD(ScreenList_Update)
 
 		strcpy(node->vfreq, GSI(MSG_DEFAULT_FRAMERATE));
 
-		monlen = GetDisplayInfoData(NULL, &monitor, sizeof(monitor), DTAG_MNTR, node->modeid);
+		monlen = GetDisplayInfoData(NULL, (UBYTE *)&monitor, sizeof(monitor), DTAG_MNTR, node->modeid);
 
 		if (monlen >= sizeof(monitor))
 		{
-			if (monitor.TotalRows && monitor.TotalColorClocks)
+			if (monitor.TotalRows)
 			{
-				ULONG vfreqint = 1000000000L / (monitor.TotalColorClocks * 280 * monitor.TotalRows / 1000) + 5;
+				UWORD colorclocks;
+				if (monitor.TotalColorClocks)
+					colorclocks = monitor.TotalColorClocks;
+				else
+					colorclocks = VGA_COLORCLOCKS; // FIXME: is this acceptable?
+
+				ULONG vfreqint = 1000000000L / (colorclocks * 280 * monitor.TotalRows / 1000) + 5;
 				node->vfreqval = vfreqint;
 
 				#if defined(__MORPHOS__)
