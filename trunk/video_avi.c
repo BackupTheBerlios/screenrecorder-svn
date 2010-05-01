@@ -420,7 +420,11 @@ static void imagetojpeg_dst_set(j_compress_ptr cinfo, struct imagetojpeg_dst *ds
 }
 
 STATIC CONST TEXT comment_morphos[] = "Created with ScreenRecorder for MorphOS";
+#if defined(__AROS__)
+STATIC CONST TEXT comment[] = "Created with ScreenRecorder for AROS";
+#else
 STATIC CONST TEXT comment[] = "Created with ScreenRecorder for Amiga/MorphOS";
+#endif
 
 VOID avi_write(struct RecorderData *data, APTR fh, APTR rgb, ULONG modulo, ULONG width, ULONG height, ULONG dupcount)
 {

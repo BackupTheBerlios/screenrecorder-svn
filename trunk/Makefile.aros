@@ -1,7 +1,7 @@
 # $Id $
 
 CC=i386-aros-gcc
-CFLAGS=-Wall -Iinclude -D__LOCALE_STDLIBBASE__ -g
+CFLAGS=-Wall -Wno-pointer-sign -Iinclude -D__LOCALE_STDLIBBASE__ -g
 # -DMUIMASTER_YES_INLINE_STDARG
 LDFLAGS=-lmui -lz -ljpeg -g
 FLEXCAT= FlexCat

@@ -363,7 +363,7 @@ DEFTMETHOD(Application_StartRecording)
 				if (proc)
 				{
 					#if !defined(__MORPHOS__)
-					PutMsg(&proc->pr_MsgPort, smsg);
+					PutMsg(&proc->pr_MsgPort, (struct Message *)smsg);
 					#endif
 
 					smsg->node.process = proc;
@@ -403,7 +403,7 @@ DEFTMETHOD(Application_ProcessEnd)
 	if (smsg)
 	{
 		data->process_count--;
-		REMOVE(&smsg->node.n);
+		REMOVE((struct Node *)&smsg->node.n);
 
 		DoMethod(ScreenList, MM_ScreenList_StopRecording, smsg->node.record_id);
 		FreeMem(smsg, sizeof(*smsg));

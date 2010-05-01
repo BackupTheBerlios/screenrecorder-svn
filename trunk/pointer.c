@@ -19,7 +19,8 @@
 #if !defined(ICONGETA_PNGBitMap)
 
 #if defined(__AROS__)
-#warning AROS ICONA_Dummy
+// The ICONGETA_PNGBitMap_... tags below are only used for MorphOS2, so we
+// can just set to 0 to avoid compiler errors
 #define ICONA_Dummy (0)
 #endif
 
@@ -264,12 +265,20 @@ VOID DrawPointer(struct RecorderData *data, LONG width, LONG height, LONG mousex
 		}
 		else if (use_alpha)
 		{
-			#if !defined(__AROS__)
-			#warning AROS BltBitMapAlpha
+			#if defined(__AROS__)
+			// FIXME: find out how do blit with alpha on AROS
+			BltMaskBitMapRastPort(data->pointer->bitmap,
+				offx, offy,
+				&data->rastport,
+				sx + offx, sy + offy,
+				w - offx, h - offy,
+				0xc0,
+				(CONST PLANEPTR)&defpointermask);
+			#else
 			STATIC CONST IPTR tags[] = { BLTBMA_USESOURCEALPHA, TRUE, TAG_DONE };
 
 			BltBitMapAlpha(data->pointer->bitmap,
-   	      offx, offy,
+				offx, offy,
 				data->rastport.BitMap,
 				sx + offx, sy + offy,
 				w - offx, h - offy,
@@ -279,7 +288,7 @@ VOID DrawPointer(struct RecorderData *data, LONG width, LONG height, LONG mousex
 		else
 		{
 			BltMaskBitMapRastPort(data->pointer->bitmap,
-   	      offx, offy,
+				offx, offy,
 				&data->rastport,
 				sx + offx, sy + offy,
 				w - offx, h - offy,
