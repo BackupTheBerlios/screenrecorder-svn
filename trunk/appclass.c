@@ -1,5 +1,5 @@
 /*
- *  $Id: png.c,v 1.4 2008/07/10 15:41:57 itix Exp $
+ *  $Id$
  */
 
 #include <string.h>

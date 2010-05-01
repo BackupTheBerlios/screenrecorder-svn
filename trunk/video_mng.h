@@ -2,7 +2,7 @@
 #define __MNG_H__
 
 /*
- *  $Id: png.h,v 1.2 2007/03/27 18:56:01 itix Exp $
+ *  $Id$
  */
 
 struct RecorderData;

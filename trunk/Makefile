@@ -1,4 +1,4 @@
-# $Id: Makefile,v 1.8 2009/02/24 00:10:11 itix Exp $
+# $Id$
 
 ROOTPATH=./
 include $(ROOTPATH)Makefile.global

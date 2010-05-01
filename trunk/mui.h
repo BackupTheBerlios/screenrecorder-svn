@@ -7,7 +7,7 @@
  *  Copyright © 2008-2009 Ilkka Lehtoranta <ilkleht@yahoo.com>
  *  All rights reserved.
  *
- *  $Id: png.c,v 1.4 2008/07/10 15:41:57 itix Exp $
+ *  $Id$
  */
 
 #define MAINTASK

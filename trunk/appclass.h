@@ -1,7 +1,7 @@
 #ifndef __APPCLASS_MCC_H__
 #define __APPCLASS_MCC_H__
 
-/* $Id: appclass.h,v 1.1 2008/06/27 22:01:48 itix Exp $ */
+/* $Id$ */
 
 enum
 {
