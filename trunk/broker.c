@@ -10,6 +10,7 @@
 #include <libraries/mui.h>
 #include <proto/alib.h>
 #include <proto/commodities.h>
+#include <proto/intuition.h>
 
 #include "broker.h"
 #include "mui.h"
@@ -19,6 +20,13 @@ STATIC VOID BrokerFunc(void)
 {
 	APTR app = (APTR)REG_A2;
 	CxMsg *msg = (APTR)REG_A1;
+#elif defined(__AROS__)
+AROS_UFH3(VOID, BrokerFunc,
+	AROS_UFHA(struct Hook *, hook, A0),
+	AROS_UFHA(APTR, app, A2),
+	AROS_UFHA(CxMsg *, msg, A1))
+{
+	AROS_USERFUNC_INIT
 #else
 //STATIC VOID BrokerFunc(struct Hook *hook, APTR app, CxMsg *msg)
 STATIC VOID BrokerFunc(__reg("a2") APTR app, __reg("a1") CxMsg *msg)
@@ -38,6 +46,9 @@ STATIC VOID BrokerFunc(__reg("a2") APTR app, __reg("a1") CxMsg *msg)
 				break;
 		}
 	}
+	#if defined(__AROS__)
+	AROS_USERFUNC_EXIT
+	#endif
 }
 
 #if defined(__MORPHOS__)

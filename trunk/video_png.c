@@ -4,7 +4,11 @@
 
 #include <cybergraphx/cybergraphics.h>
 #include <libraries/iffparse.h>
-#include <proto/asyncio.h>
+#if defined(__AROS__)
+#  include <proto/dos.h>
+#else
+#  include <proto/asyncio.h>
+#endif
 
 #if defined(__MORPHOS__)
 #include <proto/z.h>
@@ -43,7 +47,11 @@ STATIC __inline__ VOID qcopy(CONST_APTR s, APTR d, LONG length)
 
 static LONG dowrite(APTR fh, CONST_APTR data, ULONG size)
 {
+	#if defined(__AROS__)
+	return Write(fh, (APTR) data, size) == size;
+	#else
 	return WriteAsync(fh, (APTR) data, size) == size;
+	#endif
 }
 
 STATIC ULONG write_chunk(UBYTE *buffer, LONG clength, ULONG cid, APTR data)

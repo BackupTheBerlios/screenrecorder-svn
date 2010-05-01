@@ -12,6 +12,8 @@
 #include <libraries/asl.h>
 #include <libraries/gadtools.h>
 #include <libraries/iffparse.h>
+#include <libraries/mui.h>
+
 #include <proto/alib.h>
 #include <proto/exec.h>
 #include <proto/intuition.h>
@@ -146,7 +148,7 @@ STATIC APTR MakeAsl(LONG str_id, ULONG id)
 		MUIA_Popstring_Button, (IPTR)pop,
 		MUIA_Popstring_String, (IPTR)MakeString(str_id, 1024, id),
 		MUIA_Popasl_Type, ASL_FileRequest,
-		TAG_DONE);
+		End;
 
 	if (obj)
 		set(pop, MUIA_CycleChain, 1);
@@ -214,7 +216,7 @@ STATIC APTR MakeButton(LONG str_id)
 
 STATIC APTR MakeRect(ULONG weight)
 {
-	return RectangleObject, MUIA_Weight, weight, TAG_DONE);
+	return RectangleObject, MUIA_Weight, weight, End;
 }
 
 /**********************************************************************
@@ -246,12 +248,14 @@ STATIC APTR MakeCycle(LONG label, CONST CONST_STRPTR *entries, ULONG id)
 
 STATIC APTR MakeKeyAdjust(LONG label, ULONG id)
 {
-	APTR obj;
+	APTR obj = NULL;
 
+	#if !defined(__AROS__)
 	obj = MUI_NewObject(MUIC_Keyadjust,
 		MUIA_Keyadjust_AllowMultipleKeys, FALSE,
 		MUIA_CycleChain, 1,
 		TAG_DONE);
+	#endif
 
 	if (obj)
 	{
@@ -334,7 +338,7 @@ APTR CreateGUI(APTR diskobj)
 					Child, ListviewObject,
 						MUIA_Listview_List, ScreenList = NewObject(getscreenlistclass(), NULL,
 							InputListFrame,
-						End,
+						TAG_DONE),
 					End,
 
 					Child, ColGroup(2),
@@ -395,7 +399,7 @@ APTR CreateGUI(APTR diskobj)
 
 				End,
 			End,
-		End;
+		TAG_DONE);
 
 	if (app)
 	{

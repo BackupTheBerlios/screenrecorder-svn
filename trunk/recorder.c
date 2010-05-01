@@ -11,7 +11,9 @@
 #include <cybergraphx/cybergraphics.h>
 #include <exec/execbase.h>
 #include <intuition/intuitionbase.h>
-#include <proto/asyncio.h>
+#if !defined(__AROS__)
+#  include <proto/asyncio.h>
+#endif
 #include <proto/cybergraphics.h>
 #include <proto/dos.h>
 #include <proto/exec.h>
@@ -122,7 +124,11 @@ STATIC APTR OpenFile(struct RecorderData *data)
 	sprintf(filename, "%s %s.%s", date, time, format[data->recformat].postfix);
 	#endif
 
+	#if defined(__AROS__)
+	fh = Open((STRPTR)filename, MODE_NEWFILE);
+	#else
 	fh = OpenAsync((STRPTR)filename, MODE_WRITE, 16384);
+	#endif
 
 	return fh;
 }
@@ -240,10 +246,13 @@ STATIC ULONG GrabFrame(struct RecorderData *data, APTR fh, APTR buffer, ULONG wi
 	else
 		rc = VerifyScreen(data->screen, data->width, data->height, data->depth);
 
+	#if !defined(__AROS__)
+	// AROS doesn't have SA_Displayed
 	if (data->recordvisible && IS_MORPHOS2)
 	{
 		capture = getv(data->screen, SA_Displayed);
 	}
+	#endif
 
 	if (rc == SCREEN_OK && capture)
 	{
@@ -347,12 +356,16 @@ STATIC ULONG GrabFrame(struct RecorderData *data, APTR fh, APTR buffer, ULONG wi
 
 				blit = 0;
 
+				#if defined(__AROS__)
+				#warning AROS RenderLayerInfoTags!!!!
+				#else
 				RenderLayerInfoTags(data->screen->FirstWindow->RPort->Layer->LayerInfo,
 							LR_Destination_BitMap, data->rastport.BitMap,
 							data->mouserecord ? LR_Destination_Bounds : TAG_IGNORE, &data->destrect,
 							data->mouserecord ? LR_LayerInfo_Bounds   : TAG_IGNORE, &srcrect,
 							ignore            ? LR_IgnoreList         : TAG_DONE  , ignore,
 							TAG_DONE);
+				#endif
 
 				if (ignore)
 					FreeMem(ignore, ignorecnt * sizeof(struct Layer *));
@@ -576,7 +589,11 @@ VOID RecordScreen(struct RecorderData *data)
 
 						format[data->recformat].finish(data, fh);
 
+						#if defined(__AROS__)
+						Close(fh);
+						#else
 						CloseAsync(fh);
+						#endif
 
 						AbortIO((struct IORequest *)&timerio);
 						WaitIO((struct IORequest *)&timerio);

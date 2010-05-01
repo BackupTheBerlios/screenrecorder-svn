@@ -4,9 +4,20 @@
 
 #include <string.h>
 
-#include <hardware/byteswap.h>
+#if defined(__AROS__)
+#  include <aros/macros.h>
+#  define BE_SWAPLONG_C(v) AROS_LONG2BE(v)
+#  define BE_SWAPWORD_C(v) AROS_WORD2BE(v)
+#  define BE_SWAPLONG(v)   AROS_LONG2BE(v)
+#else
+#  include <hardware/byteswap.h>
+#endif
 #include <libraries/iffparse.h>
-#include <proto/asyncio.h>
+#if defined(__AROS__)
+#  include <proto/dos.h>
+#else
+#  include <proto/asyncio.h>
+#endif
 #include <proto/exec.h>
 
 #if defined(__MORPHOS__)
@@ -123,6 +134,10 @@ struct movi_chunk
 	ULONG id, length, type;
 };
 
+#if defined(__AROS__)
+#warning AROS does not like its endiannes macros in initialization
+STATIC CONST struct avi_header avi_header;
+#else
 STATIC CONST struct avi_header avi_header =
 {
 	MAKE_ID('R','I','F','F'), BE_SWAPLONG_C(0), MAKE_ID('A','V','I',' '),
@@ -191,6 +206,7 @@ STATIC CONST struct avi_header avi_header =
 
 	{ MAKE_ID('L','I','S','T'), 0, MAKE_ID('m','o','v','i') }
 };
+#endif
 
 STATIC CONST UBYTE QualityTable[] = { 100, 80, 60, 40, 20 };
 
@@ -214,7 +230,11 @@ struct imagetojpeg_dst
 
 static LONG dowrite(APTR fh, CONST_APTR data, ULONG size)
 {
+	#if defined(__AROS__)
+	return Write(fh, (APTR) data, size) == size;
+	#else
 	return WriteAsync(fh, (APTR) data, size) == size;
+	#endif
 }
 
 static void imagetojpeg_err_exit(j_common_ptr cinfo)
@@ -243,7 +263,7 @@ static void imagetojpeg_dst_init(j_compress_ptr cinfo)
 {
 	struct imagetojpeg_dst *dst = (void *)cinfo->dest;
 
-	dst->pub.next_output_byte = dst->buf; 
+	dst->pub.next_output_byte = dst->buf;
 	dst->pub.free_in_buffer = dst->data->writebuffersize;
 }
 
@@ -268,12 +288,18 @@ STATIC VOID flush_buffer(struct imagetojpeg_dst *dst, ULONG size, BOOL flush)
 				dst->writepos = SeekAsync64(dst->fh, 0, MODE_CURRENT) + 4;
 			else
 				dst->writepos = SeekAsync(dst->fh, 0, MODE_CURRENT) + 4;
+			#elif defined(__AROS__)
+			dst->writepos = Seek(dst->fh, 0, OFFSET_CURRENT) + 4;
 			#else
 			dst->writepos = SeekAsync(dst->fh, 0, MODE_CURRENT) + 4;
 			#endif
 		}
 
+		#if defined(__AROS__)
+		Write(dst->fh, &code, sizeof(code));
+		#else
 		WriteAsync(dst->fh, &code, sizeof(code));
+		#endif
 
 		dst->buf[6] = 'A';
 		dst->buf[7] = 'V';
@@ -293,19 +319,27 @@ STATIC VOID flush_buffer(struct imagetojpeg_dst *dst, ULONG size, BOOL flush)
 			oldpos = SeekAsync64(dst->fh, dst->writepos, MODE_START);
 		else
 			oldpos = SeekAsync(dst->fh, dst->writepos, MODE_START);
+		#elif defined(__AROS__)
+		oldpos = Seek(dst->fh, dst->writepos, OFFSET_BEGINNING);
 		#else
 		oldpos = SeekAsync(dst->fh, dst->writepos, MODE_START);
 		#endif
 
 		imglength = BE_SWAPLONG((dst->imagesize + 3) & ~0x3);
 
+		#if defined(__AROS__)
+		Write(dst->fh, &imglength, sizeof(imglength));
+		#else
 		WriteAsync(dst->fh, &imglength, sizeof(imglength));
+		#endif
 
 		#if defined(__MORPHOS__)
 		if (IS_MORPHOS2)
 			oldpos = SeekAsync64(dst->fh, oldpos, MODE_START);
 		else
 			oldpos = SeekAsync(dst->fh, oldpos, MODE_START);
+		#elif defined(__AROS__)
+		oldpos = Seek(dst->fh, oldpos, OFFSET_BEGINNING);
 		#else
 		oldpos = SeekAsync(dst->fh, oldpos, MODE_START);
 		#endif
@@ -314,7 +348,13 @@ STATIC VOID flush_buffer(struct imagetojpeg_dst *dst, ULONG size, BOOL flush)
 	dst->data->bytes_written += length;
 
 	if (size)
+	{
+		#if defined(__AROS__)
+		Write(dst->fh, dst->buf, size);
+		#else
 		WriteAsync(dst->fh, dst->buf, size);
+		#endif
+	}
 
 	if (flush)
 	{
@@ -328,7 +368,11 @@ STATIC VOID flush_buffer(struct imagetojpeg_dst *dst, ULONG size, BOOL flush)
 			STATIC CONST UBYTE dummy[3] = { 0, 0, 0 };
 
 			dst->data->bytes_written += size;
+			#if defined(__AROS__)
+			Write(dst->fh, &dummy, size);
+			#else
 			WriteAsync(dst->fh, &dummy, size);
+			#endif
 		}
 	}
 }
@@ -339,7 +383,7 @@ static boolean imagetojpeg_dst_empty(j_compress_ptr cinfo)
 
 	flush_buffer(dst, dst->data->writebuffersize, FALSE);
 
-	dst->pub.next_output_byte = dst->buf; 
+	dst->pub.next_output_byte = dst->buf;
 	dst->pub.free_in_buffer = dst->data->writebuffersize;
 
 	return TRUE;
@@ -441,7 +485,11 @@ VOID avi_write_end(struct RecorderData *data, APTR fh)
 
 	CopyMemQuick((APTR)&avi_header, &ahdr, sizeof(ahdr));
 
+	#if defined(__AROS__)
+	size = Seek(fh, 0, OFFSET_BEGINNING);
+	#else
 	size = SeekAsync(fh, 0, MODE_START);
+	#endif
 
 	ahdr.filelength = BE_SWAPLONG(size - 8);
 

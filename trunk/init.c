@@ -7,6 +7,8 @@
  *  $Id: png.c,v 1.4 2008/07/10 15:41:57 itix Exp $
  */
 
+#include <libraries/mui.h>
+
 #include <proto/alib.h>
 #include <proto/dos.h>
 #include <proto/exec.h>
@@ -68,7 +70,9 @@ CONST struct liblist libraries[] =
 	{ (IPTR *)&IconBase     , "icon.library"         , 0  },
 	{ (IPTR *)&MUIMasterBase, "muimaster.library"    , 11 },
 	{ (IPTR *)&CyberGfxBase , "cybergraphics.library", 40 },
+	#if !defined(__AROS__)
 	{ (IPTR *)&AsyncIOBase  , "asyncio.library"      , 0  },
+	#endif
 	{ (IPTR *)&GfxBase      , "graphics.library"     , 36 },
 	{ (IPTR *)&LayersBase   , "layers.library"       , 0  },
 	{ (IPTR *)&UtilityBase  , "utility.library"      , 0  },

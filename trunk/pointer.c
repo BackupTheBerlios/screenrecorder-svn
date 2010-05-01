@@ -17,6 +17,12 @@
 #include "recorder.h"
 
 #if !defined(ICONGETA_PNGBitMap)
+
+#if defined(__AROS__)
+#warning AROS ICONA_Dummy
+#define ICONA_Dummy (0)
+#endif
+
 #define ICONGETA_PNGBitMap                   (ICONA_Dummy + 256) /* struct BitMap ** */
 #define ICONGETA_PNGBitMap_Width             (ICONA_Dummy + 257) /* ULONG ** */
 #define ICONGETA_PNGBitMap_Height            (ICONA_Dummy + 258) /* ULONG ** */
@@ -258,6 +264,8 @@ VOID DrawPointer(struct RecorderData *data, LONG width, LONG height, LONG mousex
 		}
 		else if (use_alpha)
 		{
+			#if !defined(__AROS__)
+			#warning AROS BltBitMapAlpha
 			STATIC CONST IPTR tags[] = { BLTBMA_USESOURCEALPHA, TRUE, TAG_DONE };
 
 			BltBitMapAlpha(data->pointer->bitmap,
@@ -266,6 +274,7 @@ VOID DrawPointer(struct RecorderData *data, LONG width, LONG height, LONG mousex
 				sx + offx, sy + offy,
 				w - offx, h - offy,
 				(struct TagItem *)&tags);
+			#endif
 		}
 		else
 		{

@@ -10,6 +10,8 @@
 #include <string.h>
 
 #include <intuition/intuitionbase.h>
+#include <libraries/mui.h>
+
 #include <proto/alib.h>
 #include <proto/exec.h>
 #include <proto/graphics.h>
@@ -259,7 +261,7 @@ DEFTMETHOD(ScreenList_Update)
 
 		if (monlen >= sizeof(monitor))
 		{
-			if (monitor.TotalRows)
+			if (monitor.TotalRows && monitor.TotalColorClocks)
 			{
 				ULONG vfreqint = 1000000000L / (monitor.TotalColorClocks * 280 * monitor.TotalRows / 1000) + 5;
 				node->vfreqval = vfreqint;

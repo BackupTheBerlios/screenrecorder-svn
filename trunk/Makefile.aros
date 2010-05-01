@@ -1,0 +1,78 @@
+# $Id $
+
+CC=i386-aros-gcc
+CFLAGS=-Wall -Iinclude -D__LOCALE_STDLIBBASE__ -g
+# -DMUIMASTER_YES_INLINE_STDARG
+LDFLAGS=-lmui -lz -ljpeg -g
+FLEXCAT= FlexCat
+STRIP=i386-aros-strip
+
+include makefile.objs
+
+CATALOGS =
+TARGET = ScreenRecorder
+
+STRIPFLAGS=--strip-unneeded --remove-section=.comment
+
+OBJS = main.o appclass.o screenlistclass.o utils.o \
+	audio.o \
+	scaling.o recorder.o \
+	video_avi.o video_png.o video_mng.o \
+	qport.o mui.o pointer.o broker.o \
+	init.o
+
+all: $(TARGET) catalogs
+
+$(TARGET): $(OBJS)
+	$(CC) $(OBJS) -o $@.db $(LDFLAGS)
+	$(STRIP) $(STRIPFLAGS) $@.db -o $@
+
+locale/screenrecorder.ct: locale/screenrecorder.cd
+	@$(FLEXCAT) locale/screenrecorder.cd CTFILE $@
+
+locale.h: locale/screenrecorder.ct
+	@$(FLEXCAT) locale/screenrecorder.cd locale.h=locale/C_h_orig.sd
+
+locale: locale.h locale/screenrecorder.cd locale/screenrecorder.ct
+	@
+
+catalogs: $(patsubst %,locale/%.catalog,$(CATALOGS))
+
+%.catalog: %.ct locale/screenrecorder.cd
+	@echo "Generating $@ ..."
+	@$(FLEXCAT) locale/screenrecorder.cd $< CATALOG $@
+
+clean:
+	rm -f $(TARGET) $(TARGET).db $(TARGET).s $(OBJS) locale.h locale.c locale/*.catalog
+
+dump:
+	objdump --disassemble-all --reloc $(TARGET).db >$(TARGET).s
+
+dep:
+	echo >Makefile.dep
+	$(CC) -MM $(CFLAGS) `ls *.c` >>Makefile.dep
+
+appclass.o: appclass.c appclass.h broker.h init.h main.h mui.h \
+ include/macros/vapor.h pointer.h qport.h recorder.h screenlistclass.h \
+ utils.h locale.h
+audio.o: audio.c recorder.h
+broker.o: broker.c broker.h mui.h include/macros/vapor.h
+init.o: init.c appclass.h init.h mui.h include/macros/vapor.h \
+ screenlistclass.h
+main.o: main.c init.h main.h mui.h include/macros/vapor.h
+methodstack.o: methodstack.c main.h
+mui.o: mui.c appclass.h broker.h init.h main.h mui.h \
+ include/macros/vapor.h recorder.h screenlistclass.h utils.h locale.h
+pointer.o: pointer.c defpointer.h main.h mui.h include/macros/vapor.h \
+ pointer.h recorder.h
+qport.o: qport.c
+recorder.o: recorder.c audio.h main.h pointer.h qport.h recorder.h \
+ scaling.h utils.h locale.h video_avi.h video_mng.h video_png.h
+scaling.o: scaling.c recorder.h
+screenlistclass.o: screenlistclass.c init.h main.h mui.h \
+ include/macros/vapor.h screenlistclass.h utils.h locale.h
+utils.o: utils.c locale.h
+video_avi.o: video_avi.c main.h recorder.h
+video_jpeg.o: video_jpeg.c recorder.h
+video_mng.o: video_mng.c recorder.h video_png.h
+video_png.o: video_png.c main.h recorder.h video_png.h

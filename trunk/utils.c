@@ -9,7 +9,9 @@
 #include <proto/intuition.h>
 #include <proto/locale.h>
 
-#include "locale.c"
+#if !defined(__AROS__)
+#  include "locale.c"
+#endif
 #include "locale.h"
 #include "main.h"
 
@@ -17,9 +19,9 @@
 	getv
 **********************************************************************/
 
-ULONG getv(APTR obj, ULONG attr)
+IPTR getv(APTR obj, ULONG attr)
 {
-	ULONG	value;
+	IPTR	value;
 
 	GetAttr(attr, obj, &value);
 	return value;
@@ -33,11 +35,15 @@ LONG Check3DLayers(struct Screen *screen)
 {
 	LONG rc = FALSE;
 
+	#if !defined(__AROS__)
+	// AROS doesn't have SA_CompositingLayers
+
 	if (IS_MORPHOS2)
 	{
 		if ((IntuitionBase->LibNode.lib_Version > 51) || (IntuitionBase->LibNode.lib_Version == 51 && IntuitionBase->LibNode.lib_Revision >= 30))
 			rc = getv(screen, SA_CompositingLayers);
 	}
+	#endif
 
 	return rc;
 }
@@ -61,7 +67,7 @@ CONST_STRPTR GetLocaleString(LONG id)
 	return s;
 }
 
-#if !defined(__MORPHOS__)
+#if !defined(__MORPHOS__) && !defined(__AROS__)
 int stccpy(char *p, const char *q, int n)
 {
    char *t = p;
@@ -69,7 +75,16 @@ int stccpy(char *p, const char *q, int n)
    p[-1] = '\0';
    return p - t;
 }
+#endif
 
+#if defined(__AROS__)
+IPTR DoSuperNew(Class *cl, Object *obj, Tag tag1, ...)
+{
+	AROS_SLOWSTACKTAGS_PRE(tag1)
+	retval = DoSuperNewTagList(cl, obj, NULL, AROS_SLOWSTACKTAGS_ARG(tag1));
+	AROS_SLOWSTACKTAGS_POST
+}
+#elif !defined(__MORPHOS__)
 APTR DoSuperNew(struct IClass *cl, APTR obj, ... )
 {
 	struct opSet m;

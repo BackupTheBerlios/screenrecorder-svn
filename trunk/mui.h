@@ -17,7 +17,7 @@
 
 enum
 {
-	MM_DummyID = 0xfece0200,
+	MM_DummyID = 0xfece0200ul,
 
 	/* Application */
 	MM_Application_InstallBroker,
@@ -34,9 +34,9 @@ enum
 	MM_ScreenList_Update,
 };
 
-struct MP_Application_MenuAction     { ULONG MethodID; ULONG MenuID; };
-struct MP_ScreenList_ActiveEntry     { ULONG MethodID; LONG EntryNum; };
-struct MP_ScreenList_StopRecording   { ULONG MethodID; ULONG RefNum; };
+struct MP_Application_MenuAction     { STACKED ULONG MethodID; STACKED ULONG MenuID; };
+struct MP_ScreenList_ActiveEntry     { STACKED ULONG MethodID; STACKED LONG EntryNum; };
+struct MP_ScreenList_StopRecording   { STACKED ULONG MethodID; STACKED ULONG RefNum; };
 
 APTR CreateGUI(APTR diskobj);
 VOID AddNotify(APTR app);

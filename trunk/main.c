@@ -5,6 +5,7 @@
 #include <libraries/mui.h>
 #include <proto/alib.h>
 #include <proto/exec.h>
+#include <proto/intuition.h>
 
 #include "init.h"
 #include "main.h"
@@ -103,4 +104,4 @@ int main(void)
 CONST ULONG __abox__ = 1;
 #endif
 
-CONST TEXT __TEXTSEGMENT__ VerString[] = "\0$VER: ScreenRecorder 1.1 (17.12.09) © 2009 Ilkka Lehtoranta";
+CONST TEXT __TEXTSEGMENT__ VerString[] = "\0$VER: ScreenRecorder 1.1 (17.12.2009) © 2009 Ilkka Lehtoranta";

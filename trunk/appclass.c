@@ -5,7 +5,11 @@
 #include <string.h>
 
 #include <dos/dostags.h>
-#include <mui/Aboutbox_mcc.h>
+#if defined(__MORPHOS__)
+#  include <mui/Aboutbox_mcc.h>
+#endif
+#include <libraries/mui.h>
+
 #include <proto/alib.h>
 #include <proto/commodities.h>
 #include <proto/dos.h>
@@ -422,6 +426,7 @@ DEFSMETHOD(Application_MenuAction)
 		case MNA_ABOUT:
 			if (!data->aboutwin)
 			{
+				#if defined(__MORPHOS__)
 				STATIC CONST TEXT credits[] =
 					"\033b%I\033n"
 					"\n\tKenny Dahlroth"
@@ -430,6 +435,9 @@ DEFSMETHOD(Application_MenuAction)
 					MUIA_Window_ID       , MAKE_ID('A','B','O','U'),
 					MUIA_Aboutbox_Credits, &credits,
 				End;
+				#else
+				data->aboutwin = NULL;
+				#endif
 
 				if (data->aboutwin)
 				{

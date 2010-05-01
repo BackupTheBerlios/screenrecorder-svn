@@ -14,6 +14,24 @@
  *
 */
 
+/*
+ * STACKED is necessary for message elements for a port to 64-bit AROS
+ */
+
+#if !defined(__AROS__)
+#define STACKED
+#endif
+
+
+/*
+ * IPTR is an integer type which is large enough to store a pointer
+ */
+
+#if !defined(__AROS__) && !defined(__MORPHOS__)
+typedef ULONG IPTR;
+#endif
+
+
 /* MUI Macros */
 #ifndef MAKE_ID
 #define MAKE_ID(a,b,c,d) ((ULONG) (a)<<24 | (ULONG) (b)<<16 | (ULONG) (c)<<8 | (ULONG) (d))
@@ -139,7 +157,7 @@
  */
 #define DEFSET METHOD_INLINE static ULONG handleOM_SET(struct IClass *cl,Object*obj,struct opSet *msg)
 
-/* 
+/*
  * OM_GET method
  */
 #define DEFGET METHOD_INLINE static ULONG handleOM_GET(struct IClass *cl,Object*obj,struct opGet *msg)

@@ -21,7 +21,9 @@ CONST_STRPTR GetLocaleString(LONG id);
 
 #include <exec/lists.h>
 
+#if !defined(__AROS__)
 int stccpy(char *p, const char *q, int n);
+#endif
 APTR DoSuperNew(struct IClass *cl, APTR obj, ... );
 
 #undef REMOVE

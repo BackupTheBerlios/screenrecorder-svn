@@ -4,10 +4,16 @@
 
 #include <cybergraphx/cybergraphics.h>
 #include <libraries/iffparse.h>
-#include <proto/asyncio.h>
+#if defined(__AROS__)
+#  include <proto/dos.h>
+#else
+#  include <proto/asyncio.h>
+#endif
 
 #if defined(__MORPHOS__)
-#include <proto/z.h>
+#  include <proto/z.h>
+#elif defined(__AROS__)
+#  include <zlib.h>
 #endif
 
 #include "recorder.h"
@@ -27,7 +33,11 @@ struct mng_header
 
 static LONG dowrite(APTR fh, CONST_APTR data, ULONG size)
 {
+	#if defined(__AROS__)
+	return Write(fh, (APTR) data, size) == size;
+	#else
 	return WriteAsync(fh, (APTR) data, size) == size;
+	#endif
 }
 
 static LONG mng_write_chunk(APTR fh, ULONG clength, ULONG cid, APTR data)
