@@ -403,10 +403,6 @@ APTR CreateGUI(APTR diskobj)
 
 	if (app)
 	{
-		#if defined(__AROS__)
-		set(MouseRecorder, MUIA_Disabled, TRUE);
-		set(CaptureZoneSlider, MUIA_Disabled, TRUE);
-		#endif
 		DoMethod(SaveSettingsButton, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)app, 1, MM_Application_UseSettings);
 	}
 
@@ -482,6 +478,10 @@ VOID AddNotify(APTR app)
 		if ((IntuitionBase->LibNode.lib_Version < 51) || (IntuitionBase->LibNode.lib_Version == 51 && IntuitionBase->LibNode.lib_Revision < 30))
 			set(IgnoreRecorder, MUIA_Disabled, TRUE);
 	}
+	#if defined(__AROS__)
+	set(MouseRecorder, MUIA_Disabled, TRUE);
+	set(CaptureZoneSlider, MUIA_Disabled, TRUE);
+	#endif
 
 	DoMethod(ScreenList, MM_ScreenList_Update);
 
