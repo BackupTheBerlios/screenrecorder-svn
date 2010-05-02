@@ -403,6 +403,10 @@ APTR CreateGUI(APTR diskobj)
 
 	if (app)
 	{
+		#if defined(__AROS__)
+		set(MouseRecorder, MUIA_Disabled, TRUE);
+		set(CaptureZoneSlider, MUIA_Disabled, TRUE);
+		#endif
 		DoMethod(SaveSettingsButton, MUIM_Notify, MUIA_Pressed, FALSE, (IPTR)app, 1, MM_Application_UseSettings);
 	}
 
