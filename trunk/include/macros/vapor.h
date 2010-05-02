@@ -32,6 +32,25 @@ typedef ULONG IPTR;
 #endif
 
 
+/*
+ * Endianity
+ */
+
+#if defined(__AROS__)
+#  if AROS_BIG_ENDIAN
+#    error "Implement macros for AROS big endian"
+#  else
+#    define BE_SWAPLONG_C(x) (x)
+#    define BE_SWAPWORD_C(x) (x)
+#    define BE_SWAPLONG(x)   (x)
+#    define LE_SWAPLONG_C(x) ((((x) & 0xff000000) >> 24) | (((x) & 0x00ff0000) >>  8) | \
+       (((x) & 0x0000ff00) <<  8) | (((x) & 0x000000ff) << 24))
+#  endif
+#else
+#  include <hardware/byteswap.h>
+#endif
+
+
 /* MUI Macros */
 #ifndef MAKE_ID
 #define MAKE_ID(a,b,c,d) ((ULONG) (a)<<24 | (ULONG) (b)<<16 | (ULONG) (c)<<8 | (ULONG) (d))

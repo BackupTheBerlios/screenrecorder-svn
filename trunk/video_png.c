@@ -2,6 +2,8 @@
  *  $Id$
  */
 
+#include <macros/vapor.h>
+
 #include <cybergraphx/cybergraphics.h>
 #include <libraries/iffparse.h>
 #if defined(__AROS__)
@@ -129,7 +131,7 @@ static ULONG png_encode(UBYTE *buf, ULONG buflen, UBYTE *argb, ULONG modulo, ULO
 
 		qcopy(&crc, &buf[written + sizeof(tag)], sizeof(crc));
 
-		tag.id = MAKE_ID('I','D','A','T');
+		tag.id = LE_SWAPLONG_C(MAKE_ID('I','D','A','T'));
 		tag.size = written;
 
 		qcopy(&tag, buf, sizeof(tag));
@@ -155,12 +157,12 @@ VOID png_write(struct RecorderData *data, APTR fh, APTR argb, ULONG modulo, ULON
 	ihdr.filter = 0;
 	ihdr.interlaced = 0;
 
-	length = write_chunk(buffer, sizeof(ihdr), MAKE_ID('I','H','D','R'), &ihdr);
+	length = write_chunk(buffer, sizeof(ihdr), LE_SWAPLONG_C(MAKE_ID('I','H','D','R')), &ihdr);
 	length2 = png_encode(&buffer[length], data->writebuffersize - length - 8, argb, modulo, width, height);
 
 	if (length2)
 	{
-		static const struct png_iend iend = { { 0, MAKE_ID('I','E','N','D') }, 0xae426082 };
+		static const struct png_iend iend = { { 0, LE_SWAPLONG_C(MAKE_ID('I','E','N','D')) }, 0xae426082 };
 		ULONG i;
 
 		length += length2;

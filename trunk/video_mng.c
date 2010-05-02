@@ -2,6 +2,8 @@
  *  $Id$
  */
 
+#include <macros/vapor.h>
+
 #include <cybergraphx/cybergraphics.h>
 #include <libraries/iffparse.h>
 #if defined(__AROS__)
@@ -83,12 +85,12 @@ VOID mng_write_header(struct RecorderData *data, APTR fh, ULONG width, ULONG hei
 		mhdr.playtime = 0;
 		mhdr.profile = 1;
 
-		mng_write_chunk(fh, sizeof(mhdr), MAKE_ID('M','H','D','R'), (APTR)&mhdr);
+		mng_write_chunk(fh, sizeof(mhdr), LE_SWAPLONG_C(MAKE_ID('M','H','D','R')), (APTR)&mhdr);
 	}
 }
 
 VOID mng_write_end(struct RecorderData *data, APTR fh)
 {
-	static const struct png_iend mend = { { 0, MAKE_ID('M','E','N','D') }, 0x2120f7d5 };
+	static const struct png_iend mend = { { 0, LE_SWAPLONG_C(MAKE_ID('M','E','N','D')) }, 0x2120f7d5 };
 	dowrite(fh, (APTR)&mend, sizeof(mend));
 }

@@ -4,14 +4,8 @@
 
 #include <string.h>
 
-#if defined(__AROS__)
-#  include <aros/macros.h>
-#  define BE_SWAPLONG_C(v) AROS_LONG2BE(v)
-#  define BE_SWAPWORD_C(v) AROS_WORD2BE(v)
-#  define BE_SWAPLONG(v)   AROS_LONG2BE(v)
-#else
-#  include <hardware/byteswap.h>
-#endif
+#include <macros/vapor.h>
+
 #include <libraries/iffparse.h>
 #if defined(__AROS__)
 #  include <proto/dos.h>
@@ -134,18 +128,21 @@ struct movi_chunk
 	ULONG id, length, type;
 };
 
-#if defined(__AROS__)
-#warning AROS does not like its endiannes macros in initialization
-STATIC CONST struct avi_header avi_header;
-#else
 STATIC CONST struct avi_header avi_header =
 {
-	MAKE_ID('R','I','F','F'), BE_SWAPLONG_C(0), MAKE_ID('A','V','I',' '),
+	LE_SWAPLONG_C(MAKE_ID('R','I','F','F')),
+	BE_SWAPLONG_C(0),
+	LE_SWAPLONG_C(MAKE_ID('A','V','I',' ')),
 
 	{
-		{  MAKE_ID('L','I','S','T'), BE_SWAPLONG_C(200), MAKE_ID('h','d','r','l') },
+		{
+			LE_SWAPLONG_C(MAKE_ID('L','I','S','T')),
+			BE_SWAPLONG_C(200),
+			LE_SWAPLONG_C(MAKE_ID('h','d','r','l'))
+		},
 
-		MAKE_ID('a','v','i','h'), BE_SWAPLONG_C(56),
+		LE_SWAPLONG_C(MAKE_ID('a','v','i','h')),
+		BE_SWAPLONG_C(56),
 		BE_SWAPLONG_C(0),
 		BE_SWAPLONG_C(0),
 		BE_SWAPLONG_C(0),	// padding
@@ -160,12 +157,16 @@ STATIC CONST struct avi_header avi_header =
 	},
 
 	{
-		{ MAKE_ID('L','I','S','T'), BE_SWAPLONG_C(124), MAKE_ID('s','t','r','l') },
+		{
+			LE_SWAPLONG_C(MAKE_ID('L','I','S','T')),
+			BE_SWAPLONG_C(124),
+			LE_SWAPLONG_C(MAKE_ID('s','t','r','l'))
+		},
 
-		MAKE_ID('s','t','r','h'),
+		LE_SWAPLONG_C(MAKE_ID('s','t','r','h')),
 		BE_SWAPLONG_C(64),
-		MAKE_ID('v','i','d','s'),
-		MAKE_ID('M','J','P','G'),
+		LE_SWAPLONG_C(MAKE_ID('v','i','d','s')),
+		LE_SWAPLONG_C(MAKE_ID('M','J','P','G')),
 		0, // flags
 		0, // priority
 		0, // language
@@ -184,7 +185,7 @@ STATIC CONST struct avi_header avi_header =
 		}
 	},
 
-	MAKE_ID('s','t','r','f'),
+	LE_SWAPLONG_C(MAKE_ID('s','t','r','f')),
 	BE_SWAPLONG_C(40),
 	{
 		BE_SWAPLONG_C(40),
@@ -192,21 +193,28 @@ STATIC CONST struct avi_header avi_header =
 		BE_SWAPLONG_C(96),	// height
 		BE_SWAPWORD_C(1),
 		BE_SWAPWORD_C(24),
-		MAKE_ID('M','J','P','G'),
+		LE_SWAPLONG_C(MAKE_ID('M','J','P','G')),
 		BE_SWAPLONG_C(96 * 96 * 3),	// image size
 		0, 0, 0, 0
 	},
 
 	{
-		{ MAKE_ID('L','I','S','T'), BE_SWAPLONG_C(16), MAKE_ID('o','d','m','l') },
-		MAKE_ID('d','m','l','h'),
+		{
+			LE_SWAPLONG_C(MAKE_ID('L','I','S','T')),
+			BE_SWAPLONG_C(16),
+			LE_SWAPLONG_C(MAKE_ID('o','d','m','l'))
+		},
+		LE_SWAPLONG_C(MAKE_ID('d','m','l','h')),
 		BE_SWAPLONG_C(4),
 		BE_SWAPLONG_C(1),	// number of frames
 	},
 
-	{ MAKE_ID('L','I','S','T'), 0, MAKE_ID('m','o','v','i') }
+	{
+		LE_SWAPLONG_C(MAKE_ID('L','I','S','T')),
+		0,
+		LE_SWAPLONG_C(MAKE_ID('m','o','v','i'))
+	}
 };
-#endif
 
 STATIC CONST UBYTE QualityTable[] = { 100, 80, 60, 40, 20 };
 
@@ -278,7 +286,7 @@ STATIC VOID flush_buffer(struct imagetojpeg_dst *dst, ULONG size, BOOL flush)
 	{
 		ULONG code[2];
 
-		code[0] = MAKE_ID('0', '0', 'd', 'b');
+		code[0] = LE_SWAPLONG_C(MAKE_ID('0', '0', 'd', 'b'));
 		code[1] = BE_SWAPLONG((dst->imagesize + 3) & ~0x3);
 
 		if (!flush)
