@@ -272,7 +272,7 @@ VOID DrawPointer(struct RecorderData *data, LONG width, LONG height, LONG mousex
 				&data->rastport,
 				sx + offx, sy + offy,
 				w - offx, h - offy,
-				0xc0,
+				(ABC|ABNC|ANBC),
 				(CONST PLANEPTR)&defpointermask);
 			#else
 			STATIC CONST IPTR tags[] = { BLTBMA_USESOURCEALPHA, TRUE, TAG_DONE };
@@ -292,7 +292,7 @@ VOID DrawPointer(struct RecorderData *data, LONG width, LONG height, LONG mousex
 				&data->rastport,
 				sx + offx, sy + offy,
 				w - offx, h - offy,
-				0xc0,
+				(ABC|ABNC|ANBC),
 				(CONST PLANEPTR)&defpointermask);
 		}
 	}

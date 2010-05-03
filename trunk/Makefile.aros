@@ -1,13 +1,18 @@
 # $Id $
 
 CC=i386-aros-gcc
-CFLAGS=-Wall -Wno-pointer-sign -Iinclude -D__LOCALE_STDLIBBASE__ -g
-# -DMUIMASTER_YES_INLINE_STDARG
-LDFLAGS=-lmui -lz -ljpeg -g
+
+ifeq ($(DEBUG),)
+		CFLAGS=-Wall -O3 -Wno-pointer-sign -fno-strict-aliasing \
+				-Iinclude -D__LOCALE_STDLIBBASE__
+		LDFLAGS=-lmui -lz -ljpeg
+else
+		CFLAGS=-Wall -Wno-pointer-sign -Iinclude -D__LOCALE_STDLIBBASE__ -g
+		LDFLAGS=-lmui -lz -ljpeg -g
+endif
+
 FLEXCAT= FlexCat
 STRIP=i386-aros-strip
-
-include makefile.objs
 
 CATALOGS =
 TARGET = ScreenRecorder

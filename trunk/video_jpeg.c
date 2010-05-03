@@ -10,7 +10,11 @@
 
 #include "recorder.h"
 
+#if defined(__AROS__)
+STATIC CONST TEXT comment[] = "AROS Screenshot. Saved with Screen Recorder.";
+#else
 STATIC CONST TEXT comment[] = "MorphOS Screenshot. Saved with Screen Recorder.";
+#endif
 
 struct imagetojpeg_err
 {

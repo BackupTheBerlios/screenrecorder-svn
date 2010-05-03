@@ -17,6 +17,7 @@
 #if defined(__MORPHOS__)
 #include <proto/jfif.h>
 #else
+#include <stdio.h>
 #include "jpeglib.h"
 #endif
 
