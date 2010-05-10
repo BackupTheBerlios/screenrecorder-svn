@@ -263,13 +263,15 @@ DEFTMETHOD(ScreenList_Update)
 		{
 			if (monitor.TotalRows)
 			{
+				ULONG vfreqint;
 				UWORD colorclocks;
+
 				if (monitor.TotalColorClocks)
 					colorclocks = monitor.TotalColorClocks;
 				else
-					colorclocks = VGA_COLORCLOCKS; // FIXME: is this acceptable?
+					colorclocks = VGA_COLORCLOCKS; // XXX: AROS needs this
 
-				ULONG vfreqint = 1000000000L / (colorclocks * 280 * monitor.TotalRows / 1000) + 5;
+				vfreqint = 1000000000L / (colorclocks * 280 * monitor.TotalRows / 1000) + 5;
 				node->vfreqval = vfreqint;
 
 				#if defined(__MORPHOS__)
