@@ -1,11 +1,41 @@
 # $Id$
 
-ROOTPATH=./
-include $(ROOTPATH)Makefile.global
+# Build tools & options
 
-CFLAGS+=-Iinclude -DAROS_ALMOST_COMPATIBLE -D__INLINED_METHODS -DSYSTEM_PRIVATE -D__MORPHOS_SHAREDLIBS -O3 -finline-functions -mcpu=750 -mmultiple -mstring
+CC=ppc-morphos-gcc
+LD=ppc-morphos-ld
+AS=ppc-morphos-as
+STRIP=ppc-morphos-strip
+AR=ppc-morphos-ar
+RANLIB=ppc-morphos-ranlib
+OBJCOPY=ppc-morphos-objcopy
+
+STRIPFLAGS=--strip-unneeded --remove-section=.comment
+
+CFLAGS  = -O2 -Wall -noixemul
+CFLAGS += -Iinclude -DAROS_ALMOST_COMPATIBLE -D__INLINED_METHODS -DSYSTEM_PRIVATE -D__MORPHOS_SHAREDLIBS -O3 -finline-functions -mcpu=750 -mmultiple -mstring
 
 include makefile.objs
+
+COMPILEECHO=@echo Compiling $@ ...
+ASSEMBLEECHO=@echo Assembling $@ ...
+LINKECHO=@echo Linking $@ ...
+COMPILEPREFIX=@
+LINKPREFIX=@
+
+.c.o:
+	$(COMPILEECHO)
+	$(COMPILEPREFIX)$(CC) $(CFLAGS) $(CPUOPTFLAGS) -c $< -o $@
+
+.c.ho:
+	$(COMPILEECHO)
+	$(COMPILEPREFIX)$(HOSTCC) $(HOSTCFLAGS) -c $< -o $@
+
+.asm.o:
+	$(ASSEMBLEECHO)
+	$(COMPILEPREFIX)$(AS) $(ASFLAGS) $< -o $@
+
+.SUFFIXES: .ho .asm
 
 CATALOGS =
 TARGET = ScreenRecorder
