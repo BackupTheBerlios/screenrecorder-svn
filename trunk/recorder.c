@@ -356,9 +356,7 @@ STATIC ULONG GrabFrame(struct RecorderData *data, APTR fh, APTR buffer, ULONG wi
 
 				blit = 0;
 
-				#if defined(__AROS__)
-				#warning AROS RenderLayerInfoTags!!!!
-				#else
+				#if !defined(__AROS__)
 				RenderLayerInfoTags(data->screen->FirstWindow->RPort->Layer->LayerInfo,
 							LR_Destination_BitMap, data->rastport.BitMap,
 							data->mouserecord ? LR_Destination_Bounds : TAG_IGNORE, &data->destrect,

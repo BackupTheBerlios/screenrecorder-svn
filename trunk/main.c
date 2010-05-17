@@ -58,10 +58,11 @@ int main(void)
 
 	if ((app = Init(wbmsg)))
 	{
-		ULONG	input[2], signals;
+		IPTR	input[2];
+		ULONG	signals;
 
 		input[0]	= MUIM_Application_NewInput;
-		input[1]	= (ULONG)&signals;
+		input[1]	= (IPTR)&signals;
 		signals  = 0;
 
 		while (DoMethodA(app, (Msg)input) != MUIV_Application_ReturnID_Quit)

@@ -1,6 +1,10 @@
 # $Id$
 
-CC=i386-aros-gcc
+ifeq ($(OS), x86_64)
+	CC=x86_64-aros-gcc
+else
+	CC=i386-aros-gcc
+endif
 
 ifeq ($(DEBUG),)
 		CFLAGS=-Wall -O3 -Wno-pointer-sign -fno-strict-aliasing \

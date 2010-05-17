@@ -98,7 +98,7 @@ STATIC VOID LocalizeMenu(struct NewMenu *menu)
 	while (menu->nm_Type != NM_END)
 	{
 		if (menu->nm_Label != NM_BARLABEL && menu->nm_Label)
-			menu->nm_Label = (STRPTR)GSI((LONG)menu->nm_Label);
+			menu->nm_Label = (STRPTR)GSI((IPTR)menu->nm_Label);
 
 		menu++;
 	}
@@ -112,7 +112,7 @@ STATIC VOID LocalizeArray(CONST_STRPTR *array)
 {
 	do
 	{
-		*array = GSI((LONG)*array);
+		*array = GSI((IPTR)*array);
 		array++;
 	}
 	while (*array);

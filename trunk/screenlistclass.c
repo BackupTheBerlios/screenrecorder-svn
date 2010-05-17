@@ -56,7 +56,7 @@ STATIC VOID ScreenDisplayFunc(struct Hook *h, CONST_STRPTR *array, struct Screen
 	{
 		if (IsMUI4)
 		{
-			ULONG pos = (ULONG)array[-1];
+			IPTR pos = (IPTR)array[-1];
 
 			if (pos % 2)
 				array[-9] = (STRPTR)10;		// -7 for columns

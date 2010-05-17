@@ -9,7 +9,7 @@
 #include "locale.h"
 #endif
 
-ULONG getv(APTR obj, ULONG attr);
+IPTR getv(APTR obj, ULONG attr);
 LONG Check3DLayers(struct Screen *screen);
 CONST_STRPTR GetLocaleString(LONG id);
 
