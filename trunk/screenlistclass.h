@@ -27,7 +27,7 @@ struct ScreenNode
 
 APTR getscreenlistclassroot(void);
 APTR getscreenlistclass(void);
-ULONG create_screenlistclass(void);
+IPTR create_screenlistclass(void);
 VOID delete_screenlistclass(void);
 
 #endif /* __SCREENLISTCLASS_MCC_H__ */

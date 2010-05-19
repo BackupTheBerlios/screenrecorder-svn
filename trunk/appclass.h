@@ -50,7 +50,7 @@ enum
 
 APTR getappclassroot(void);
 APTR getappclass(void);
-ULONG create_appclass(void);
+IPTR create_appclass(void);
 VOID delete_appclass(void);
 
 #endif /* __APPCLASS_MCC_H__ */
