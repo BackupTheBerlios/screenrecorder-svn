@@ -38,7 +38,11 @@ typedef ULONG IPTR;
 
 #if defined(__AROS__)
 #  if AROS_BIG_ENDIAN
-#    error "Implement macros for AROS big endian"
+#    define BE_SWAPLONG_C(x) ((((x) & 0xff000000) >> 24) | (((x) & 0x00ff0000) >>  8) | \
+       (((x) & 0x0000ff00) <<  8) | (((x) & 0x000000ff) << 24))
+#    define BE_SWAPWORD_C(x) ((((x) >> 8) & 0xff) | (((x) & 0xff) << 8))
+#    define BE_SWAPLONG(x)   AROS_SWAP_BYTES_LONG((x))
+#    define LE_SWAPLONG_C(x) (x)
 #  else
 #    define BE_SWAPLONG_C(x) (x)
 #    define BE_SWAPWORD_C(x) (x)
