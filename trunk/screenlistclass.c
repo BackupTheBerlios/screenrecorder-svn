@@ -1,7 +1,7 @@
 /*
  *  ScreenRecorder
  *
- *  Copyright © 2009 Ilkka Lehtoranta <ilkleht@yahoo.com>
+ *  Copyright © 2009-2012 Ilkka Lehtoranta <ilkleht@yahoo.com>
  *  All rights reserved.
  *
  *  $Id$
@@ -62,7 +62,7 @@ STATIC VOID ScreenDisplayFunc(struct Hook *h, CONST_STRPTR *array, struct Screen
 				array[-9] = (STRPTR)10;		// -7 for columns
 		}
 
-		array[0]	= node->title;
+		array[0]	= node->title_pp;
 		array[1]	= node->recording ? node->vfreq : node->vfreq;
 		array[2] = GSI(node->compositing ? MSG_ENHANCED_DISPLAY_ENGINE : MSG_STANDARD_DISPLAY_ENGINE);
 		array[3]	= node->recording ? GSI(MSG_RECORDING) : (CONST_STRPTR)"";
@@ -209,6 +209,8 @@ DEFTMETHOD(ScreenList_Update)
 		{
 			n->nodelen = sizeof(*n) + namelen;
 			n->screen = screen;
+			n->title_pp[0] = '\033';
+			n->title_pp[1] = '-';
 			stccpy(n->title, title, namelen);
 			ADDTAIL(&data->screenlist, n);
 

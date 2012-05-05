@@ -4,7 +4,7 @@
 /*
  *  ScreenRecorder
  *
- *  Copyright © 2009 Ilkka Lehtoranta <ilkleht@yahoo.com>
+ *  Copyright © 2009-2012 Ilkka Lehtoranta <ilkleht@yahoo.com>
  *  All rights reserved.
  *
  *  $Id$
@@ -22,6 +22,7 @@ struct ScreenNode
 	UBYTE depth;
 	UBYTE compositing;
 	TEXT vfreq[12];
+	TEXT title_pp[2]; // This one is always right before title[0]
 	TEXT title[0];
 };
 
